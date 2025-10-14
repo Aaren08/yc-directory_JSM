@@ -14,10 +14,12 @@
     "react-dom": "$react-dom"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "next": "15.5.4",
     "next-auth": "^5.0.0-beta.29",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

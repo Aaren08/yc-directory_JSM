@@ -210,7 +210,7 @@
   }
 
   .startup-card_desc {
-    @apply font-normal text-[16px] line-clamp-2 my-3 bg-[var(--text-black-100)] break-all;
+    @apply font-normal text-[16px] line-clamp-2 my-3 break-all;
   }
 
   .startup-card_img {

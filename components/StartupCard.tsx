@@ -3,9 +3,9 @@ import { EyeIcon, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { StartupTypeCardOnly } from "@/sanity/types/startup";
+import { StartupTypeCard } from "@/sanity/types/startup";
 
-const StartupCard = ({ post }: { post: StartupTypeCardOnly }) => {
+const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   const {
     _createdAt,
     views,

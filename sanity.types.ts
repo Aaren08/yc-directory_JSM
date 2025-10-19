@@ -210,7 +210,7 @@ export type STARTUPS_QUERYResult = Array<{
   views: number | null;
 }>;
 // Variable: STARTUP_BY_ID_QUERY
-// Query: *[_type == "startup" && slug.current == $id][0] {    _id,    title,    _createdAt,    slug,     category,    description,    image,    author -> {    _id, name, image, bio    },    views,    pitch}
+// Query: *[_type == "startup" && _id == $id][0] {    _id,    title,    _createdAt,    slug,     category,    description,    image,    author -> {    _id, name, username, image, bio    },    views,    pitch}
 export type STARTUP_BY_ID_QUERYResult = {
   _id: string;
   title: string | null;
@@ -222,11 +222,18 @@ export type STARTUP_BY_ID_QUERYResult = {
   author: {
     _id: string;
     name: string | null;
+    username: string | null;
     image: string | null;
     bio: string | null;
   } | null;
   views: number | null;
   pitch: string | null;
+} | null;
+// Variable: STARTUP_VIEWS_QUERY
+// Query: *[_type == "startup" && _id == $id][0] {    _id, views}
+export type STARTUP_VIEWS_QUERYResult = {
+  _id: string;
+  views: number | null;
 } | null;
 
 // Query TypeMap
@@ -234,6 +241,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"startup\" && defined(slug.current) \n    && !defined($search) \n    || title match $search\n    || category match $search \n    || author->name match $search ] | order(_createdAt desc) {\n  _id, \n    title,\n    _createdAt,\n    slug, \n    category,\n    description,\n    image,\n    author -> {\n    _id, name, image, bio\n    },\n    views\n}": STARTUPS_QUERYResult;
-    "\n  *[_type == \"startup\" && slug.current == $id][0] {\n    _id,\n    title,\n    _createdAt,\n    slug, \n    category,\n    description,\n    image,\n    author -> {\n    _id, name, image, bio\n    },\n    views,\n    pitch\n}": STARTUP_BY_ID_QUERYResult;
+    "\n  *[_type == \"startup\" && _id == $id][0] {\n    _id,\n    title,\n    _createdAt,\n    slug, \n    category,\n    description,\n    image,\n    author -> {\n    _id, name, username, image, bio\n    },\n    views,\n    pitch\n}": STARTUP_BY_ID_QUERYResult;
+    "\n  *[_type == \"startup\" && _id == $id][0] {\n    _id, views\n}": STARTUP_VIEWS_QUERYResult;
   }
 }

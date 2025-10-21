@@ -10,9 +10,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    cacheComponents: true,
-  },
+  cacheComponents: true,
+  headers: async () => [
+    {
+      source: "/startup/:id*",
+      headers: [{ key: "Cache-Control", value: "no-store" }],
+    },
+  ],
   devIndicators: {
     position: "bottom-right",
   },

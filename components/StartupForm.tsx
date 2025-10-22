@@ -9,6 +9,7 @@ import { formSchema } from "@/lib/validation";
 import { z } from "zod";
 import { toast as sonnerToast } from "sonner";
 import { useRouter } from "next/navigation";
+import { createPitch } from "@/lib/actions";
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -28,17 +29,15 @@ const StartupForm = () => {
       // If validation passes, proceed with form submission logic
       // e.g., send data to the server or API
       await formSchema.parseAsync(formValues);
-      console.log(formValues);
 
-      // const result = await createIdea(prevState, formData, pitch);
-
-      //   if(result.status === "SUCCESS") {
-      //     sonnerToast("Startup submitted successfully!", {
-      //       description: "Your startup pitch has been received.",
-      //     });
-      //     router.push(`/startup/${result.id}`)
-      //   }
-      //   return result;
+      const result = await createPitch(prevState, formData, pitch);
+      if (result.status === "SUCCESS") {
+        sonnerToast("Startup submitted successfully!", {
+          description: "Your startup pitch has been received.",
+        });
+        router.push(`/startup/${result._id}`);
+      }
+      return result;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;

@@ -13,7 +13,11 @@ export function formatDate(date: string) {
   });
 }
 
-export function formatNumber(num: number): string {
+export function formatNumber(num: number | null | undefined): string {
+  if (typeof num !== "number" || isNaN(num)) {
+    num = 0;
+  }
+
   let formatted: string;
 
   if (num >= 1_000_000_000) {
@@ -26,6 +30,10 @@ export function formatNumber(num: number): string {
     formatted = num.toString();
   }
 
-  const label = num > 1 ? "views" : "view";
+  const label = num === 1 ? "view" : "views";
   return `${formatted} ${label}`;
+}
+
+export function parseServerActionResponse<T>(response: T) {
+  return JSON.parse(JSON.stringify(response));
 }

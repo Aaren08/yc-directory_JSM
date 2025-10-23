@@ -1,9 +1,10 @@
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { EyeIcon, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { StartupTypeCard } from "@/sanity/types/startup";
+import { Skeleton } from "./ui/skeleton";
 
 const StartupCard = ({ post }: { post: StartupTypeCard }) => {
   const {
@@ -40,8 +41,11 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
         </div>
         <Link href={`/user/${author?._id}`}>
           <Image
-            src={"https://placehold.co/600x400"}
-            alt={"placeholder"}
+            src={
+              author?.image ||
+              "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"
+            }
+            alt={author?.name || "Author Image"}
             width={48}
             height={48}
             className="rounded-full"
@@ -80,6 +84,19 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
         </Button>
       </div>
     </li>
+  );
+};
+
+// SHADCN UI SKELETON
+export const StartupCardSkeleton = () => {
+  return (
+    <>
+      {[0, 1, 2, 3, 4].map((index: number) => (
+        <li key={cn("skeleton", index)}>
+          <Skeleton className="startup-card_skeleton" />
+        </li>
+      ))}
+    </>
   );
 };
 

@@ -7,16 +7,29 @@ import { Suspense, use } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getStartup } from "./getStartup";
 import { getParams } from "./getParams";
+import { client } from "@/sanity/lib/client";
+import { PLAYLIST_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import View from "@/components/View";
+import StartupPlaylists from "@/components/StartupPlaylists";
 
 const md = markdownit();
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const id = use(getParams(params));
-  const post = use(getStartup(id));
+
+  // start independent fetches in parallel
+  const startupPromise = getStartup(id);
+  const playlistPromise = client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+    slug: "startup-of-the-day",
+  });
+
+  const post = use(startupPromise);
   if (!post) {
     return notFound();
   }
+
+  const playlistResult = use(playlistPromise);
+  const { select: editorPosts } = playlistResult ?? { select: [] };
 
   const parsedContent = md.render(post?.pitch || "");
   return (
@@ -41,8 +54,11 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
               className="flex items-center gap-2 mb-3"
             >
               <Image
-                src={post.author?.image}
-                alt="avatar"
+                src={
+                  post.author?.image ??
+                  "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+                }
+                alt={post.author?.name ?? "avatar"}
                 width={64}
                 height={64}
                 className="rounded-full drop-shadow-lg"
@@ -73,6 +89,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
         <hr className="divider" />
 
         {/* EDITOR SELECTED STARTUPS */}
+        <StartupPlaylists editorPosts={editorPosts} />
       </section>
 
       {/* PPR STRATEGY */}

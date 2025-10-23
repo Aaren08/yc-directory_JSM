@@ -246,6 +246,38 @@ export type AUTHOR_BY_GITHUB_ID_QUERYResult = {
   image: string | null;
   bio: string | null;
 } | null;
+// Variable: AUTHOR_BY_ID_QUERY
+// Query: *[_type == "author" && _id == $id][0] {    _id,    id,    name,    username,    email,    image,    bio}
+export type AUTHOR_BY_ID_QUERYResult = {
+  _id: string;
+  id: number | null;
+  name: string | null;
+  username: string | null;
+  email: string | null;
+  image: string | null;
+  bio: string | null;
+} | null;
+// Variable: STARTUPS_BY_AUTHOR_QUERY
+// Query: *[_type == "startup" && author._ref == $id] | order(_createdAt desc) {  _id,     title,    _createdAt,    slug,     category,    description,    image,    author -> {    _id, name, image, bio    },    views}
+export type STARTUPS_BY_AUTHOR_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  _createdAt: string;
+  slug: Slug | null;
+  category: string | null;
+  description: string | null;
+  image: string | null;
+  author: {
+    _id: string;
+    name: string | null;
+    image: string | null;
+    bio: string | null;
+  } | null;
+  views: number | null;
+}>;
+// Variable: PLAYLIST_BY_SLUG_QUERY
+// Query: *[_type == "playlist" && slug.current == $slug][0] {    _id,    title,    slug,    select[]-> {      _id,      title,      _createdAt,      slug,      author -> {        _id, name, image, bio, slug      },      description,      image,      category,      views,      pitch}}
+export type PLAYLIST_BY_SLUG_QUERYResult = null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -255,5 +287,8 @@ declare module "@sanity/client" {
     "\n  *[_type == \"startup\" && _id == $id][0] {\n    _id,\n    title,\n    _createdAt,\n    slug, \n    category,\n    description,\n    image,\n    author -> {\n    _id, name, username, image, bio\n    },\n    views,\n    pitch\n}": STARTUP_BY_ID_QUERYResult;
     "\n  *[_type == \"startup\" && _id == $id][0] {\n    _id, views\n}": STARTUP_VIEWS_QUERYResult;
     "\n  *[_type == \"author\" && id == $id][0] {\n    _id,\n    id,\n    name,\n    username,\n    email,\n    image,\n    bio\n}": AUTHOR_BY_GITHUB_ID_QUERYResult;
+    "\n  *[_type == \"author\" && _id == $id][0] {\n    _id,\n    id,\n    name,\n    username,\n    email,\n    image,\n    bio\n}": AUTHOR_BY_ID_QUERYResult;
+    "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc) {\n  _id, \n    title,\n    _createdAt,\n    slug, \n    category,\n    description,\n    image,\n    author -> {\n    _id, name, image, bio\n    },\n    views\n}": STARTUPS_BY_AUTHOR_QUERYResult;
+    "\n  *[_type == \"playlist\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    select[]-> {\n      _id,\n      title,\n      _createdAt,\n      slug,\n      author -> {\n        _id, name, image, bio, slug\n      },\n      description,\n      image,\n      category,\n      views,\n      pitch\n}}": PLAYLIST_BY_SLUG_QUERYResult;
   }
 }

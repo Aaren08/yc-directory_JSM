@@ -1,4 +1,4 @@
-![Project Logo](./logo.png)
+![Project Logo](./public/logo.png)
 
 # YC Directory
 
@@ -17,7 +17,7 @@ A Next.js application that serves as a directory for startups. It includes funct
 
 ## Tech Stack
 
-**Client:** React 19, TailwindCSS, Next 15, TypeScript
+**Client:** React 19, TailwindCSS, Next 15, TypeScript, JavaScript
 
 **Server:** Next 15
 

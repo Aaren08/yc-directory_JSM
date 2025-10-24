@@ -1,4 +1,9 @@
+<div align="center">
+
 ![Project Logo](./public/logo.png)
+
+</div>
+
 
 # YC Directory
 
